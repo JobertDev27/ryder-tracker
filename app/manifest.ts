@@ -7,6 +7,7 @@ export default function manifest(): MetadataRoute.Manifest {
     description: "A budget and deliveries tracker",
     start_url: "/",
     display: "standalone",
+    orientation: "portrait",
     background_color: "#000000",
     theme_color: "#ffffff",
     icons: [
