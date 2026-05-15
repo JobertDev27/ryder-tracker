@@ -17,6 +17,7 @@ export default function DoughnutChart({ ...Props }: DoughnutProps) {
             },
           ],
         }}
+        options={{ cutout: "70%" }}
       />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 mt-[1rem]">
         <p className="text-4xl font-bold">{Props.percentage}%</p>

@@ -18,7 +18,7 @@ export default function Home() {
           datasets={{
             label: "Delivery Goal",
             data: [delivered, goal],
-            backgroundColor: ["#7be383", "#383838"],
+            backgroundColor: ["#7be383", "#dedede"],
           }}
         />
       </section>
