@@ -1,10 +1,13 @@
 "use client";
 import { useState } from "react";
 import DoughnutChart from "@/components/charts/DoughnutChart";
+import DefaultButton from "@/components/interactive/ThemeButton";
 
 export default function Home() {
   const [delivered, setDelivered] = useState<number>(40);
   const [goal, setGoal] = useState<number>(100);
+
+  const handleAddDelivery = () => setDelivered((prev) => (prev += 1));
 
   return (
     <main className="flex flex-col justify-center items-center mt-4">
@@ -19,6 +22,7 @@ export default function Home() {
           }}
         />
       </section>
+      <DefaultButton label="Add Delivery" callback={handleAddDelivery} />
     </main>
   );
 }
