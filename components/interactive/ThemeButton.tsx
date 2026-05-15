@@ -4,10 +4,10 @@ type ButtonProp = {
   label: string;
   callback: () => void;
   variant?: "primary" | "secondary" | "danger" | "ghost";
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "flex";
 };
 
-const buttonStyles = cva("px-4 py-2 rounded font-medium transition", {
+const buttonStyles = cva("rounded-full font-medium transition", {
   variants: {
     variant: {
       primary: "bg-blue-600 text-white hover:bg-blue-700",
@@ -19,6 +19,7 @@ const buttonStyles = cva("px-4 py-2 rounded font-medium transition", {
       sm: "text-sm px-3 py-1",
       md: "text-base px-4 py-2",
       lg: "text-lg px-5 py-3",
+      flex: "text-base py-2 flex-1",
     },
   },
   defaultVariants: {
