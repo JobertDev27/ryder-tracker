@@ -28,20 +28,42 @@ export default function Home() {
   };
 
   return (
-    <main className="flex flex-col justify-center items-center mt-4">
+    <main className="flex flex-col justify-center items-center mt-4 mx-5">
       <h1 className="text-2xl">Delivery Goal</h1>
-      <section className="w-[80%] flex mb-[20px]">
-        <DoughnutChart
-          percentage={Math.round(((delivered + overtime) / total) * 100)}
-          labels={["Overtime", "Delivered", "Goal"]}
-          datasets={{
-            label: "Delivery Goal",
-            data: [overtime, delivered, remaining],
-            backgroundColor: ["#7b43de", "#7be383", "#dedede"],
-          }}
-        />
+      <section className="flex justify-evenly w-full bg-white rounded-xl py-2">
+        <div className="flex flex-col justify-center mr-[2rem]">
+          <h2 className="font-bold">WEEKLY GOAL</h2>
+          <div className="flex gap-[1rem] items-center">
+            <div className="w-[1rem] h-[1rem] bg-[#7b43de]"></div>
+            <p>Overtime: {overtime}</p>
+          </div>
+          <div className="flex gap-[1rem] items-center">
+            <div className="w-[1rem] h-[1rem] bg-[#7be383]"></div>
+            <p>Delivered: {delivered}</p>
+          </div>
+          <div className="flex gap-[1rem] items-center">
+            <div className="w-[1rem] h-[1rem] bg-[#dedede]"></div>
+            <p>Remaining: {remaining}</p>
+          </div>
+
+          <div className="border-t-1 my-2">
+            <p>TOTAL: {total}</p>
+          </div>
+        </div>
+        <div>
+          <DoughnutChart
+            className="h-15"
+            percentage={Math.round(((delivered + overtime) / total) * 100)}
+            labels={["Overtime", "Delivered", "Goal"]}
+            datasets={{
+              label: "Delivery Goal",
+              data: [overtime, delivered, remaining],
+              backgroundColor: ["#7b43de", "#7be383", "#dedede"],
+            }}
+          />
+        </div>
       </section>
-      <section className="position: absolute bottom-0 m-[20px] flex flex-row w-[100%] px-[10px] gap-[10px]">
+      <section className="position: absolute bottom-0 m-4 flex flex-row w-full px-3 gap-2">
         <ThemeButton
           label="Remove Delivery"
           callback={handleRemoveDelivery}
