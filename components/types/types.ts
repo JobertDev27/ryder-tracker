@@ -6,4 +6,5 @@ export type DoughnutProps = {
     data: number[];
     backgroundColor: string[];
   };
+  className: string;
 };
