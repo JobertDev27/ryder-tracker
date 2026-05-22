@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import DoughnutChart from "@/components/charts/DoughnutChart";
+import BarChart from "@/components/charts/BarChart";
 import ThemeButton from "@/components/interactive/ThemeButton";
 
 export default function Home() {
@@ -46,7 +47,7 @@ export default function Home() {
             <p>Remaining: {remaining}</p>
           </div>
 
-          <div className="border-t-1 my-2">
+          <div className="border-t my-2">
             <p>TOTAL: {total}</p>
           </div>
         </div>
@@ -62,6 +63,10 @@ export default function Home() {
             }}
           />
         </div>
+      </section>
+      <section className="my-5 flex flex-col gap-3 w-full">
+        <h2 className="text-lg ">Delivery History</h2>
+        <BarChart />
       </section>
       <section className="position: absolute bottom-0 m-4 flex flex-row w-full px-3 gap-2">
         <ThemeButton
