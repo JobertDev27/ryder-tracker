@@ -1,6 +1,17 @@
-import Dexie from "dexie";
+import Dexie, { EntityTable } from "dexie";
 
-export const db = new Dexie("ryderDB");
+interface Delivered {
+  id: number;
+  date: string;
+  amount: number;
+}
+
+export const db = new Dexie("ryderDB") as Dexie & {
+  delivered: EntityTable<Delivered, "id">;
+};
+
 db.version(1).stores({
   delivered: "++id, date, amount",
 });
+
+export type { Delivered };
