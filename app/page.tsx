@@ -8,10 +8,12 @@ export default function Home() {
   const [delivered, setDelivered] = useState<number>(80);
   const [remaining, SetRemaining] = useState<number>(60);
   const [overtime, setOvertime] = useState<number>(0);
+  const [dailyDelivered, setDailyDelivered] = useState<number>(0);
 
   const total = 140;
 
   const handleAddDelivery = () => {
+    setDailyDelivered((prev) => (prev += 1));
     if (delivered != total) {
       setDelivered((prev) => (prev += 1));
       SetRemaining((prev) => (prev -= 1));
@@ -20,6 +22,7 @@ export default function Home() {
     }
   };
   const handleRemoveDelivery = () => {
+    setDailyDelivered((prev) => (prev -= 1));
     if (overtime != 0) {
       setOvertime((prev) => (prev -= 1));
     } else {
@@ -33,47 +36,53 @@ export default function Home() {
       <div className="w-full">
         <h1 className="text-2xl mb-3 font-bold">DELIVERY GOAL</h1>
       </div>
-      <section className="flex justify-evenly items-center w-full bg-white rounded-xl py-2">
-        <div className="flex flex-col justify-center mr-[2rem]">
-          <h2 className="font-bold mb-2">Weekly Goal</h2>
-          <div className="flex gap-[1rem] items-center border-b border-neutral-300 pb-1 justify-between">
-            <div className="flex gap-2 items-center">
-              <div className="w-[1rem] h-[1rem] bg-[#7b43de] rounded-full"></div>
-              <p>overtime:</p>
+      <section className="bg-white flex flex-col items-center justify-center p-3 w-full rounded-lg mb-3">
+        <h2 className="font-bold">Delivered Today</h2>
+        <p className="text-4xl font-bold">{dailyDelivered}</p>
+      </section>
+      <section className="flex flex-col w-full bg-white rounded-xl py-2 px-3">
+        <h2 className="font-bold mb-3">Weekly Delivered</h2>
+        <div className="flex justify-between w-full">
+          <div className="flex flex-col justify-center mr-[2rem]">
+            <div className="flex gap-[1rem] items-center border-b border-neutral-300 pb-1 justify-between">
+              <div className="flex gap-2 items-center">
+                <div className="w-[1rem] h-[1rem] bg-[#7b43de] rounded-full"></div>
+                <p>overtime:</p>
+              </div>
+              <p>{overtime}</p>
             </div>
-            <p>{overtime}</p>
-          </div>
-          <div className="flex gap-[1rem] items-center border-b border-neutral-300 pb-1 justify-between">
-            <div className="flex gap-2 items-center">
-              <div className="w-[1rem] h-[1rem] bg-[#7be383] rounded-full"></div>
-              <p>delivered:</p>
+            <div className="flex gap-[1rem] items-center border-b border-neutral-300 pb-1 justify-between">
+              <div className="flex gap-2 items-center">
+                <div className="w-[1rem] h-[1rem] bg-[#7be383] rounded-full"></div>
+                <p>delivered:</p>
+              </div>
+              <p>{delivered}</p>
             </div>
-            <p>{delivered}</p>
-          </div>
-          <div className="flex gap-[1rem] items-center border-b border-neutral-300 pb-1 justify-between">
-            <div className="flex gap-2 items-center">
-              <div className="w-[1rem] h-[1rem] bg-[#dedede] rounded-full"></div>
-              <p>remaining:</p>
+            <div className="flex gap-[1rem] items-center border-b border-neutral-300 pb-1 justify-between">
+              <div className="flex gap-2 items-center">
+                <div className="w-[1rem] h-[1rem] bg-[#dedede] rounded-full"></div>
+                <p>remaining:</p>
+              </div>
+              <p>{remaining}</p>
             </div>
-            <p>{remaining}</p>
-          </div>
 
-          <div className="flex justify-between my-2 items-center">
-            <p>Total:</p>
-            <p>{total}</p>
+            <div className="flex justify-between my-2 items-center">
+              <p>Total:</p>
+              <p>{total}</p>
+            </div>
           </div>
-        </div>
-        <div>
-          <DoughnutChart
-            className="h-15"
-            percentage={Math.round(((delivered + overtime) / total) * 100)}
-            labels={["Overtime", "Delivered", "Goal"]}
-            datasets={{
-              label: "Delivery Goal",
-              data: [overtime, delivered, remaining],
-              backgroundColor: ["#7b43de", "#7be383", "#dedede"],
-            }}
-          />
+          <div>
+            <DoughnutChart
+              className="h-15"
+              percentage={Math.round(((delivered + overtime) / total) * 100)}
+              labels={["Overtime", "Delivered", "Goal"]}
+              datasets={{
+                label: "Delivery Goal",
+                data: [overtime, delivered, remaining],
+                backgroundColor: ["#7b43de", "#7be383", "#dedede"],
+              }}
+            />
+          </div>
         </div>
       </section>
       <section className="my-5 flex flex-col gap-3 w-full bg-white px-4 py-2 rounded-lg">
