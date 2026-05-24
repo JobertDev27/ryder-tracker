@@ -32,15 +32,15 @@ export default function Home() {
   };
 
   return (
-    <main className="flex flex-col justify-center items-center mt-4 mx-5">
+    <main className="flex flex-col justify-center items-center mt-4 mx-5 gap-4">
       <div className="w-full">
-        <h1 className="text-2xl mb-3 font-bold">DELIVERY GOAL</h1>
+        <h1 className="text-2xl font-bold">DELIVERY GOAL</h1>
       </div>
-      <section className="bg-white flex flex-col items-center justify-center p-3 w-full rounded-lg mb-3">
+      <section className="bg-white flex flex-col items-center justify-center px-4 py-3 w-full rounded-lg">
         <h2 className="font-bold">Delivered Today</h2>
         <p className="text-4xl font-bold">{dailyDelivered}</p>
       </section>
-      <section className="flex flex-col w-full bg-white rounded-xl py-2 px-3">
+      <section className="flex flex-col w-full bg-white rounded-xl py-2 px-4">
         <h2 className="font-bold mb-3">Weekly Delivered</h2>
         <div className="flex justify-between w-full">
           <div className="flex flex-col justify-center mr-[2rem]">
@@ -85,7 +85,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="my-5 flex flex-col gap-3 w-full bg-white px-4 py-2 rounded-lg">
+      <section className="flex flex-col gap-3 w-full bg-white px-4 py-2 rounded-lg">
         <h2 className="text font-bold">Delivery History</h2>
         <BarChart />
       </section>
