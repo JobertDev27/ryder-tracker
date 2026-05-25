@@ -1,10 +1,15 @@
-import { db, Delivered } from "@/lib/db";
+import { db } from "@/lib/db";
 
 const today = new Date().toISOString().split("T")[0];
 
 export async function getDeliveries() {
   const deliveries = await db.delivered.toArray();
   return deliveries;
+}
+
+export async function getDeliveriesToday() {
+  const deliveredToday = await db.delivered.where("date").equals(today).first();
+  return deliveredToday;
 }
 
 export async function incrementDelivery() {
@@ -29,10 +34,15 @@ export async function incrementDelivery() {
 export async function decrementDelivery() {
   const deliveredToday = await db.delivered.where("date").equals(today).first();
   if (!deliveredToday) return;
+  const newAmount = deliveredToday.amount - 1;
   try {
     await db.delivered.update(deliveredToday.id!, {
-      amount: deliveredToday.amount - 1,
+      amount: newAmount,
     });
+    if (newAmount < 1) {
+      db.delivered.delete(deliveredToday.id);
+      console.log("deleted");
+    }
   } catch (error) {
     console.error(error);
   }
