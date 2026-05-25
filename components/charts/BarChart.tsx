@@ -30,6 +30,7 @@ export default function BarChart({ label, data }: BarProp) {
 
   return (
     <Bar
+      className="max-h-100 w-full"
       options={options}
       data={{
         labels: label,
