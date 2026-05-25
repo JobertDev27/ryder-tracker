@@ -1,6 +1,16 @@
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { DoughnutProps } from "../types/types";
+
+export interface DoughnutProps {
+  percentage: number;
+  labels: string[];
+  datasets: {
+    label: string;
+    data: number[];
+    backgroundColor: string[];
+  };
+  className: string;
+}
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
