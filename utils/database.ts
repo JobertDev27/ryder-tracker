@@ -47,3 +47,14 @@ export async function decrementDelivery() {
     console.error(error);
   }
 }
+
+export function updateDeliveryGoal(goal: number) {
+  db.settings.put({
+    key: "weeklyGoal",
+    value: goal,
+  });
+}
+
+export async function getWeeklyGoal() {
+  return await db.settings.get("weeklyGoal");
+}

@@ -7,34 +7,45 @@ import {
   decrementDelivery,
   getDeliveries,
   getDeliveriesToday,
+  getWeeklyGoal,
   incrementDelivery,
+  updateDeliveryGoal,
 } from "@/utils/database";
 
 import { DeliveredProp } from "@/lib/db";
 
 export default function Home() {
-  const [delivered, setDelivered] = useState<number>(80);
-  const [remaining, SetRemaining] = useState<number>(60);
+  const [delivered, setDelivered] = useState<number>(0);
   const [overtime, setOvertime] = useState<number>(0);
   const [dailyDelivered, setDailyDelivered] = useState<number>(0);
+  const [goal, setGoal] = useState<number>(0);
   const [allDeliveries, setAllDeliveries] = useState<DeliveredProp[]>([]);
-
-  const total = 140;
 
   useEffect(() => {
     const getDeliveryData = async () => {
       const todayDelivered = await getDeliveriesToday();
+      const weeklyGoal = await getWeeklyGoal();
+
       setAllDeliveries(await getDeliveries());
       setDailyDelivered(todayDelivered?.amount || 0);
+
+      if (weeklyGoal) {
+        if (typeof weeklyGoal?.value === "number") {
+          setGoal(weeklyGoal.value);
+        }
+      } else {
+        const goalPrompt = prompt("What is your weekly goal?");
+        updateDeliveryGoal(Number(goalPrompt));
+        setGoal(Number(goalPrompt));
+      }
     };
     getDeliveryData();
   }, []);
 
   const handleAddDelivery = async () => {
     setDailyDelivered((prev) => prev + 1);
-    if (delivered != total) {
+    if (delivered != goal) {
       setDelivered((prev) => prev + 1);
-      SetRemaining((prev) => prev - 1);
     } else {
       setOvertime((prev) => prev + 1);
     }
@@ -48,7 +59,6 @@ export default function Home() {
       setOvertime((prev) => prev - 1);
     } else {
       setDelivered((prev) => prev - 1);
-      SetRemaining((prev) => prev + 1);
     }
     await decrementDelivery();
     setAllDeliveries(await getDeliveries());
@@ -71,11 +81,11 @@ export default function Home() {
           <div>
             <DoughnutChart
               className="h-15"
-              percentage={Math.round(((delivered + overtime) / total) * 100)}
+              percentage={Math.round(((delivered + overtime) / goal) * 100)}
               labels={["Overtime", "Delivered", "Goal"]}
               datasets={{
                 label: "Delivery Goal",
-                data: [overtime, delivered, remaining],
+                data: [overtime, delivered, goal - delivered],
                 backgroundColor: ["#7b43de", "#7be383", "#dedede"],
               }}
             />
@@ -100,12 +110,12 @@ export default function Home() {
                 <div className="w-[1rem] h-[1rem] bg-[#dedede] rounded-full"></div>
                 <p>remaining:</p>
               </div>
-              <p>{remaining}</p>
+              <p>{goal - delivered}</p>
             </div>
 
             <div className="flex justify-between my-2 items-center">
-              <p>Total:</p>
-              <p>{total}</p>
+              <p>Goal:</p>
+              <p>{goal}</p>
             </div>
           </div>
         </div>
@@ -135,7 +145,7 @@ export default function Home() {
           ) : (
             <div className="flex flex-col items-center justify-center text-2xl font-bold">
               <p>:&#x28;</p>
-              <p>No Data Yet</p>
+              <p>No Data Available Yet</p>
             </div>
           )}
         </div>
