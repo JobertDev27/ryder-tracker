@@ -10,16 +10,12 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip);
 
-interface BarChartProp {
-  dateLabels: string[];
-  deliveredAmount: string[];
+interface BarProp {
+  label: string[];
+  data: number[];
 }
 
-export default function BarChart({
-  dateLabels,
-  deliveredAmount,
-}: BarChartProp) {
-  const labels = ["05/12", "05/13", "05/14", "05/15", "05/21", "05/22", "TBD"];
+export default function BarChart({ label, data }: BarProp) {
   const options = {
     responsive: true,
     plugins: {
@@ -36,11 +32,11 @@ export default function BarChart({
     <Bar
       options={options}
       data={{
-        labels: labels,
+        labels: label,
         datasets: [
           {
             label: "Delivered",
-            data: deliveredAmount,
+            data: data,
             backgroundColor: "#23db7c",
           },
         ],

@@ -20,6 +20,8 @@ export default function Home() {
   const [dailyDelivered, setDailyDelivered] = useState<number>(0);
   const [goal, setGoal] = useState<number>(0);
   const [allDeliveries, setAllDeliveries] = useState<DeliveredProp[]>([]);
+  const [label, setLabel] = useState<string[]>([]);
+  const [data, setData] = useState<number[]>([]);
 
   useEffect(() => {
     const getDeliveryData = async () => {
@@ -38,6 +40,22 @@ export default function Home() {
         updateDeliveryGoal(Number(goalPrompt));
         setGoal(Number(goalPrompt));
       }
+
+      const del = await getDeliveries(7);
+      let tempLabel: string[] = del.map((d) =>
+        new Date(d.date).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+        }),
+      );
+      while (tempLabel.length < 7) {
+        tempLabel.push("TBD");
+      }
+
+      const tempData: number[] = del.map((d) => d.amount);
+
+      setLabel(tempLabel);
+      setData(tempData);
     };
     getDeliveryData();
   }, []);
@@ -122,7 +140,7 @@ export default function Home() {
       </section>
       <section className="flex flex-col gap-3 w-full bg-white px-4 py-2 rounded-lg">
         <h2 className="text font-bold">Recent Deliveries</h2>
-        <BarChart />
+        <BarChart label={label} data={data} />
       </section>
       <section className="flex flex-col gap-3 w-full bg-white px-4 py-2 rounded-lg pb-10">
         <h2 className="text font-bold">Delivery History</h2>
@@ -143,8 +161,7 @@ export default function Home() {
               })}
             </>
           ) : (
-            <div className="flex flex-col items-center justify-center text-2xl font-bold">
-              <p>:&#x28;</p>
+            <div className="flex items-center justify-center font-bold">
               <p>No Data Available Yet</p>
             </div>
           )}
