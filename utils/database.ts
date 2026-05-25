@@ -2,8 +2,10 @@ import { db } from "@/lib/db";
 
 const today = new Date().toISOString().split("T")[0];
 
-export async function getDeliveries() {
-  const deliveries = await db.delivered.toArray();
+export async function getDeliveries(limit?: number) {
+  const deliveries = limit
+    ? await db.delivered.limit(limit).toArray()
+    : await db.delivered.toArray();
   return deliveries;
 }
 
