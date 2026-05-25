@@ -117,7 +117,7 @@ export default function Home() {
       <section className="flex flex-col gap-3 w-full bg-white px-4 py-2 rounded-lg pb-10">
         <h2 className="text font-bold">Delivery History</h2>
         <div className="display flex-col">
-          {allDeliveries ? (
+          {allDeliveries.length > 0 ? (
             <>
               <div className="flex w-full justify-between border-b border-neutral-400">
                 <p>Delivered</p>
@@ -133,11 +133,14 @@ export default function Home() {
               })}
             </>
           ) : (
-            <p>No Data Available Yet</p>
+            <div className="flex flex-col items-center justify-center text-2xl font-bold">
+              <p>:&#x28;</p>
+              <p>No Data Yet</p>
+            </div>
           )}
         </div>
       </section>
-      <section className="position: absolute bottom-0 m-4 flex flex-row w-full px-3 gap-2">
+      <section className="position: absolute bottom-0 m-4 flex flex-row w-full px-3 gap-2 fixed">
         <ThemeButton
           label="Remove Delivery"
           callback={handleRemoveDelivery}
