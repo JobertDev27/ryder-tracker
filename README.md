@@ -1,36 +1,27 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ryder Tracker
+A delivery goal and budget tracker PWA, built using Next.js and uses charts for live data visualisation. Built with the idea of a niche tracking application for delivery riders that they can use on the go.
+<img width="1864" height="1040" alt="ryder-tracker" src="https://github.com/user-attachments/assets/579dae84-2df5-49f9-ad18-3c1cadb43515" />
 
-## Getting Started
 
-First, run the development server:
+## Mobile-first Design
+<img width="393" height="852" alt="706488638_1749813232671877_5753891419902471711_n" src="https://github.com/user-attachments/assets/b558e453-0480-4213-9c61-34163fb432e0" />
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+## STACK
+Frontend: Next.js, React, TypeScript, Tailwind
+Libraries and Tools: Charts.js, Serwist, DexieDB
+
+## RUN THIS APPLICATION
+Clone this repo
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+git clone https://github.com/JobertDev27/ryder-tracker.git
+```
+CD into the project and install dependencies
+```
+cd ryder-tracker && code .
+npm install
+```
+Run dev enviroment
+```
+npm run dev
+```
