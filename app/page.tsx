@@ -13,6 +13,7 @@ import {
 } from "@/utils/database";
 
 import { DeliveredProp } from "@/lib/db";
+import { refresh } from "next/cache";
 
 export default function Home() {
   const [delivered, setDelivered] = useState<number>(0);
@@ -23,7 +24,45 @@ export default function Home() {
   const [label, setLabel] = useState<string[]>([]);
   const [recentHistory, setRecentHistory] = useState<number[]>([]);
 
-  const refreshData = () => {};
+  const refreshData = async () => {
+    // Fetch data from db
+    const deliveriesToday = await getDeliveriesToday();
+    const weeklyGoal = await getWeeklyGoal();
+    const recentDeliveries = await getDeliveries(7);
+    const deliveryHistory = await getDeliveries();
+
+    // Normalize values
+    const deliveredAmount = deliveriesToday?.amount ?? 0;
+    const goalAmount = Number(weeklyGoal?.value) || 100;
+
+    // Calculate overtime
+    const overtime =
+      deliveredAmount > goalAmount ? deliveredAmount - goalAmount : 0;
+
+    // Update state
+    setDailyDelivered(deliveredAmount);
+    setGoal(goalAmount);
+    setDelivered(deliveredAmount);
+    setOvertime(overtime);
+
+    // Update Chart labels
+    const labels = recentDeliveries.map((d) =>
+      new Date(d.date).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      }),
+    );
+
+    while (labels.length < 7) {
+      labels.push("TBD");
+    }
+
+    const history = recentDeliveries.map((d) => d.amount);
+
+    setLabel(labels);
+    setRecentHistory(history);
+    setAllDeliveries(deliveryHistory);
+  };
 
   useEffect(() => {
     const getDeliveryData = async () => {
@@ -42,45 +81,18 @@ export default function Home() {
         updateDeliveryGoal(Number(goalPrompt));
         setGoal(Number(goalPrompt));
       }
-
-      const del = await getDeliveries(7);
-      let tempLabel: string[] = del.map((d) =>
-        new Date(d.date).toLocaleDateString("en-US", {
-          month: "short",
-          day: "numeric",
-        }),
-      );
-      while (tempLabel.length < 7) {
-        tempLabel.push("TBD");
-      }
-
-      const tempData: number[] = del.map((d) => d.amount);
-
-      setLabel(tempLabel);
-      setRecentHistory(tempData);
     };
     getDeliveryData();
+    refreshData();
   }, []);
 
   const handleAddDelivery = async () => {
-    setDailyDelivered((prev) => prev + 1);
-    if (delivered != goal) {
-      setDelivered((prev) => prev + 1);
-    } else {
-      setOvertime((prev) => prev + 1);
-    }
     await incrementDelivery();
+    refreshData();
   };
   const handleRemoveDelivery = async () => {
-    if (dailyDelivered < 1) return alert("Cannot go below 0");
-    setDailyDelivered((prev) => prev - 1);
-    if (overtime != 0) {
-      setOvertime((prev) => prev - 1);
-    } else {
-      setDelivered((prev) => prev - 1);
-    }
     await decrementDelivery();
-    setAllDeliveries(await getDeliveries());
+    refreshData();
   };
 
   return (
@@ -105,7 +117,11 @@ export default function Home() {
                 labels={["Overtime", "Delivered", "Goal"]}
                 datasets={{
                   label: "Delivery Goal",
-                  data: [overtime, delivered, goal - delivered],
+                  data: [
+                    overtime,
+                    delivered,
+                    goal > delivered ? goal - delivered : 0,
+                  ],
                   backgroundColor: ["#7b43de", "#7be383", "#dedede"],
                 }}
               />
@@ -130,7 +146,7 @@ export default function Home() {
                   <div className="w-[1rem] h-[1rem] bg-[#dedede] rounded-full"></div>
                   <p>remaining:</p>
                 </div>
-                <p>{goal - delivered}</p>
+                <p>{goal > delivered ? goal - delivered : 0}</p>
               </div>
 
               <div className="flex justify-between my-2 items-center">
